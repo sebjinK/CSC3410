@@ -1,0 +1,56 @@
+AND   BL,  0FH ; sets BL to 0000 1010 from 1111 1010
+
+Sr. No			Instruction			Format
+1			AND				AND operand1, operand2
+2			OR				OR operand1, operand2
+
+
+BITS 32
+SECTION .text
+ global _start
+_start:
+ mov ax, 8h ; put 8 in the ax
+ and ax, 1 ; and ax with 1
+ jz evnn  ;jz looks at the 0 flag was triggered by having a 1 in it, it will move to 	  ;	evnn
+ mov eax, 4 ;sys call num (sys_write)
+ mov ebx, 1 ;file descriptor (stdout)
+ mov ecx, odd_msg ; message to write
+ mov edx, len2 ; len of message
+ int 0x80 ; call kernel
+ jmp outprog ;pass control to address of the given label (jump to label)
+
+evnn:
+ mov ah, 09h
+ mov eax, 4 ;sys call num (sys_write)
+ mov ebx, 1 ;file descriptor (stdout)
+ mov ecx, even_msg ;message to write 
+ mov edx, len1 ;length of message
+ int 0x80 ;call kernel
+
+outprog:
+ mov eax, 1 ;sys call number (sys_exit)
+ int 0x80 ;call kernel
+
+SECTION .data
+even_msg: db 'Even number!', 10
+len1 equ $- even_msg
+odd_msg: db 'Odd Nummber!', 10
+len equ $- odd_msg
+
+The OR INSTRUCTION - exists for preforming bitwise OR operations
+It returns 0, if both bits are 0
+It returns 1, if one bit is 1
+It returns 1, if both bits are 1
+
+0 1 1 0 0 1 1 0
+1 0 0 1 1 1 0 0
+---------------
+1 1 1 1 1 1 1 0
+
+
+The OR operation can be used for setting on more bits
+For example: let us assume the AL reigster contains 0011 1010
+To set the four low-order bits, you can OR it with a value 0000 1111, i.e. FH
+
+or bl, 0FH		; sets BL to 0011 1111 from 0011 1010
+

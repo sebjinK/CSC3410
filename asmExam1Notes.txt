@@ -1,0 +1,104 @@
+asm Language statements
+
+Labels (or "Identifiers") 
+- Valid characters in laberls are lettres, numbers, _, $, #, @, ~, . and ?.
+- Of the special characters, you should only used underscores, however 
+An identifier may not begin with adigit up to 4095 (don't make them that big tho)
+
+You cannot use identifiers that are the same as the names of instructions, directive, registers, and other words that have special meaning to the assembler
+
+Assembly lang statemetns are entered one statement per line 
+Each statement follows the following fomat:
+[label] mnemonic [operands][;comment]
+
+Prog Format
+- Indent for readibility
+  - start labels in column 1
+  - align mnemonics and trailing comments where possible
+
+
+- Assembler code is not case-sensitive, but it is common practice to:
+Use lowercase for instructions
+Use uppercase for 
+
+nasm -f elf32 -o hello.o hello.asm - assembler
+ld hello.o -m elf_i386 -o hello - linker
+
+
+Three sections of an asm program
+- These sections represent various memory segments 
+Memory Segments
+- Data segments
+  - .data (declare memory region where data elemetns are stored for the program and 		          remains static for the rest of the program)
+  - .bss (static memory section, contains uninitialized data (variables and constants), 		is zero-filled)
+Code segment
+represented by .text section
+
+Stack contains data values passed to functions and instructions 
+
+
+Registers
+- To speed up the processor operations, the processor includes some internal memory storage locations, called registers
+- fast comared to RAM because they are on the processsory, no memory bus to travers BUT small in size
+
+ten 32-bit regiseters and six registers in IA-32 architecture
+Registers can be grouped into three different types : General, Control, 
+
+General types:
+Data registers (As complete 32-bit data registers (eax, ebx, ecx, edx), 
+                16 bit lower halves of the 32 bit registers (ax, bx, cx, dx), 
+                8 bit lower halves of the 16-bit registers (ah, al, bh, bl, ch, cl, dh, dl))
+
+Some of these have specific use in arithmetical operations
+- EAX is the primary accumulator
+  -std input/outputt and most arithmetic instructions (ex one operand in is stored in eax or ax or al based on size of the operand in MUL)
+
+
+Pointer registers are 32-bit EIP, ESP, EBP
+Instruction Pointer(EIP)
+stores the off set address of the next instruction to be executed
+EIP gives the complete address of teh currrent instrcution in the code segment with CS included (CS:EIP)
+
+Stack Pointer(ESP)
+The ESP register provides the offset value within the program stack
+Current position of data or addresss within the program stack with SS register (SS:SP)
+
+Base Pointer (EBP)
+Mainly helps in referncing the parameter variables passed to a subroutine
+The address in SS register is combied with off set in EBP to get the loccaiton of thep arameter
+EBP can also be combined with EDI and ESI as base register for special addressing
+
+Index Registers
+
+32-bit registers (ESI, EDI) and their 16-bit rightmost portions(SI and DI)
+
+
+Control Registers are EIP and EFLAGS (32-bit) - involve comparisons and mathematical operations
+Each bit has a meaning:
+OF (overflow flag)
+DF (Direction flag) - determines right to left or left to right direction for moving or comparing str data (0 is left to right and 1 is right to left)
+IF (Interrrupt flag  - determines whether the external interrupts liike keyboard entry are to be ignored or processed (0 is disabled and 1 is enabled)
+TF (Trap Flag) - allows setting the operaiton oft he processor in single-step mode. Debuggers use this flag
+SF (sign flag) - shows the sing of the result of an arithmetic operation. (0 is positive, 1 is negative)
+Zero Flag (ZF) - indicates the rsult of a na arithmetic or comparison operation. (nonzero is 0, zero is 1)
+Auxiliary  Carry Flag (AF) - Contains the bit frombit three to bit 4 following an arithmetic operation
+Parity Flag (PF) - even number of 1 bits is 0 and odd number of odd bits 1
+Carry Flag (CF) - contains the carry of 0 or 1 from a high-order bit after an arithmetic operation
+
+CS, DS, and SS store the locaitons (indirectoly of the code , data and stack segments
+Additional segment registers are Es, CS, FS
+
+
+Steps for using linux sys_calls 
+- Put the sys call number in the EAX register
+Store the sys call in the registers EBX/ECX 
+call the relevant interrupt (0x80 or 80h)
+the result is usually erturned in the EAX register
+
+six regisrers that store the argumetns of the system call used
+EBX, ECX, EDX, ESI ,EDI, and EBP
+registers take the consecutive argumetns, starting with the EBX register
+If there are more than six arguments, then the memory locaiton of the first arguments is tored in the EBX register
+
+
+
